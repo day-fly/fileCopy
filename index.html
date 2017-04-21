@@ -4,12 +4,29 @@
     <meta charset="UTF-8">
     <title>Copy Files</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
   </head>
 
   <body>
-    <input type="file" id="_folder" class="filestyle" data-buttonText="Select Root Folder" data-buttonName="btn-primary" webkitdirectory />
-    <label id="filePath"/>
+
+
+        <input type="file" id="_folder" class="filestyle" data-buttonText="Select Root Folder" data-buttonName="btn-primary" webkitdirectory />
+        <div style="margin:10px 10px 10px 10px;">Absolute Path : <label id="filePath"/></div>
+
+
+        <div class="panel panel-default">
+          <div class="panel-heading">추출할 파일경로를 Enter로 구분해서 입력하세요.<br>선택한 Root Folder의 상대경로로 입력해야 합니다.
+          </div>
+          <div class="panel-body">
+            <textarea id="copyFilePaths" class="form-control" rows="10">
+            </textarea>
+          </div>
+      </div>
+
+
+
   </body>
 
   <script>
@@ -26,6 +43,9 @@
     });
 
   </script>
+
+  <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="./lib/bootstrap-filestyle.min.js"> </script>
 
 </html>

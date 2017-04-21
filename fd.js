@@ -1,4 +1,5 @@
 var folder = {
+    path : '',
     getPath : function(){
       return this.path;
     }
