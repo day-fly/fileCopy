@@ -2,18 +2,30 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Copy Files</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
   </head>
+
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <input type="file" id="_folder" class="filestyle" data-buttonText="Select Root Folder" data-buttonName="btn-primary" webkitdirectory />
+    <label id="filePath"/>
   </body>
 
   <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
+    window.$ = window.jQuery = require('jquery');
+    let fd = require('./fd');
+
+    $(document).ready(function(){
+      $(":file").filestyle({buttonName: "btn-primary", buttonText: "Select Root Folder"});
+    });
+
+    //Select File Event
+    document.getElementById("_folder").addEventListener("change", _ => {
+      fd.selectFolder(event, "filePath");
+    });
+
   </script>
+  <script type="text/javascript" src="./lib/bootstrap-filestyle.min.js"> </script>
+
 </html>
