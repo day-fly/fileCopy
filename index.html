@@ -11,40 +11,78 @@
 
   <body>
     <div class="panel panel-default">
-      <div class="panel-heading">1.복사할 파일의 Root 디렉토리 설정 및 파일경로 입력
+      <div class="panel-heading"><strong>Settings</strong>
       </div>
       <div class="panel-body">
-        <input type="file" id="rootFolder" class="filestyle" data-buttonText="Select Root Directory" data-buttonName="btn-primary" webkitdirectory />
+        <strong>Source Dir :</strong>
+        <input type="file" id="rootFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" webkitdirectory />
         <div style="margin:0px 10px 10px 0px;">Absolute Path : <label id="rootFolderPath"/></div>
 
-        <div class="panel panel-default">
-          <div class="panel-heading">복사할 파일경로를 Enter로 구분해서 입력하세요.<br>선택한 Root Folder의 상대경로로 입력해야 합니다.
-          </div>
+        <strong>Destination Dir :</strong>
+        <input type="file" id="destFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" webkitdirectory />
+        <div style="margin:0px 10px 10px 0px;">Absolute Path : <label id="destFolderPath"/></div>
+
+        <div class="checkbox">
+          <label><input id="svnCheckbox" type="checkbox" value="">Import a list of changed files using SVN revision (Options for SVN projects)</label>
+        </div>
+        <div id="svnInfo" class="panel panel-default" style="display:none;">
           <div class="panel-body">
-            <textarea id="copyFilePaths" class="form-control" rows="10"></textarea>
+        <div style="margin:0px 0px 10px 0px;" class="input-group">
+          <span class="input-group-addon">Revision</span>
+          <span class="input-group-addon">from</span>
+          <input id="fromRev" type="text" class="form-control" name="fromRev" value=""/>
+          <span class="input-group-addon">to</span>
+          <input id="toRev" type="text" class="form-control" name="toRev" value=""/>
+        </div>
+        <label id="svnErrMsg" class='text-danger'></label>
+        <div id="progressBar" class="progress" style="display:none;">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%">
           </div>
+        </div>
+        <p class="text-right">
+          <a href="#" id="svnConnBtn" class="btn btn-primary" role="button">Import</a>
+        </p>
+        </div>
       </div>
+
+        <div class="alert alert-info" role="alert">
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          Input the <strong>relative path</strong> of the file you need to copy. <label class="text-danger">(Separator: Enter)</label>
+        </div>
+        <textarea style="margin:0px 10px 10px 0px;" id="copyFilePaths" class="form-control" rows="10"></textarea>
+
+
+      <p class="text-right">
+        <a href="#" id="saveBtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Save Settings</a>
+        <a href="#" id="copyBtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-paste" aria-hidden="true"></span> Copy File</a>
+      </p>
       </div>
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-heading">2. 복사할 위치 설정
+    <div class="panel-heading"><strong>Log</strong>
     </div>
-    <div class="panel-body">
-      <input type="file" id="destFolder" class="filestyle" data-buttonText="Select Destination" data-buttonName="btn-primary" webkitdirectory />
-      <div style="margin:0px 10px 10px 0px;">Absolute Path : <label id="destFolderPath"/></div>
+    <div id="resultLog" class="panel-body">
     </div>
 </div>
-      <p class="text-right"><a href="#" class="btn btn-primary" role="button">Copy File</a></p>
+
   </body>
 
   <script>
     window.$ = window.jQuery = require('jquery');
+    const iconv  = require('iconv-lite');
     const fd = require('./fd');
+    const svnInfo = require('./svnInfo');
+
+    //const euckr2utf8 = new iconv('EUC-KR', 'UTF-8');
+    //const utf82euckr = new iconv('UTF-8', 'EUC-KR');
 
     $(document).ready(function(){
-      $("#rootFolder").filestyle({buttonName: "btn-primary", buttonText: "Select Root Directory"});
-      $("#destFolder").filestyle({buttonName: "btn-primary", buttonText: "Select Destination"});
+      $("#rootFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
+      $("#destFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
+
+      //test
+      fd.testSetting();
     });
 
     //Select File Event
@@ -56,6 +94,38 @@
       fd.selectDestFolder(event, "destFolderPath");
     });
 
+    document.getElementById("svnCheckbox").addEventListener("click", _ => {
+      if( $("#svnInfo").css("display") == "none"){
+        $('#svnInfo').show();
+      }
+      else{
+        $('#svnInfo').hide();
+      }
+    });
+
+    document.getElementById("svnConnBtn").addEventListener("click", _ => {
+      let svnUrl = $('#rootFolderPath').text();
+      let fromRev = $('#fromRev').val();
+      let toRev = $('#toRev').val();
+      svnInfo.importFileList(svnUrl, fromRev, toRev, "copyFilePaths");
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", _ => {
+      alert("saveBtn");
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", _ => {
+      const lines = [];
+      $.each($('#copyFilePaths').val().split(/\n/), function(i, line){
+        if(line && line.length){
+          //fd.copyFile(line);
+          lines.push(line);
+        }
+      });
+      if(lines && lines.length){
+          fd.copyFiles(lines,"resultLog");
+      }
+    });
   </script>
 
   <!-- 합쳐지고 최소화된 최신 자바스크립트 -->

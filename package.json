@@ -15,6 +15,9 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.4.1",
-    "jquery": "^3.2.1"
+    "fs-extra": "^2.1.2",
+    "iconv-lite": "^0.4.16",
+    "jquery": "^3.2.1",
+    "svn-spawn": "^0.1.5"
   }
 }
