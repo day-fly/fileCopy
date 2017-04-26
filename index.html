@@ -23,6 +23,14 @@
         <div style="margin:0px 10px 10px 0px;">Absolute Path : <label id="destFolderPath"/></div>
 
         <div class="checkbox">
+          <label><input id="classesMode" type="checkbox" value="">Classes mode (Copy classes files instead of java files.)</label>
+          <div id="classesPathInfo" style="display:none;">
+            <strong>Classes Dir :</strong>
+            <input type="file" id="classesFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" webkitdirectory />
+            <div style="margin:0px 10px 10px 0px;">Absolute Path : <label id="classesFolderPath"/></div>
+          </div>
+        </div>
+        <div class="checkbox">
           <label><input id="svnCheckbox" type="checkbox" value="">Import a list of changed files using SVN revision (Options for SVN projects)</label>
         </div>
         <div id="svnInfo" class="panel panel-default" style="display:none;">
@@ -80,6 +88,7 @@
     $(document).ready(function(){
       $("#rootFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
       $("#destFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
+      $("#classesFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
 
       //test
       fd.testSetting();
@@ -92,6 +101,19 @@
 
     document.getElementById("destFolder").addEventListener("change", _ => {
       fd.selectDestFolder(event, "destFolderPath");
+    });
+
+    document.getElementById("classesFolder").addEventListener("change", _ => {
+      fd.selectDestFolder(event, "classesFolderPath");
+    });
+
+    document.getElementById("classesMode").addEventListener("click", _ => {
+      if( $("#classesPathInfo").css("display") == "none"){
+        $('#classesPathInfo').show();
+      }
+      else{
+        $('#classesPathInfo').hide();
+      }
     });
 
     document.getElementById("svnCheckbox").addEventListener("click", _ => {

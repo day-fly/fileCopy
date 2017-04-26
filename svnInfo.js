@@ -22,7 +22,6 @@ exports.importFileList = function(url, fromRev, toRev, viewId){
         $.each(data.split(/\n/), function(i, line){
           if(line && line.length){
               if(line.lastIndexOf('.') !== -1){
-                  console.log(line);
                   $('#'+viewId).val($('#'+viewId).val() + "\\" + $.trim(line.substring(2, line.length)) + '\n');
               }
           }
