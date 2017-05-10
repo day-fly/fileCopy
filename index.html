@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Copy Files</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap.min.css">
     <!-- 부가적인 테마 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
 
     <style>
     .alert {
@@ -14,6 +14,10 @@
       height: 30px;
       line-height:30px;
       padding:0px 15px;
+    }
+
+    .panel-height {
+      height: 300px;
     }
     </style>
   </head>
@@ -32,12 +36,14 @@
         <div style="margin:0px 10px 10px 0px;">지정된 경로<!--Absolute Path--> : <label id="destFolderPath"/></div>
 
         <div class="checkbox">
-          <label><input id="classesMode" type="checkbox" value="">Class 파일 복사 (기본적으로 프로젝트 폴더의 .classpath 파일정보 참조)<!--Classes mode (Copy classes files instead of java files.)--></label>
+          <label><input id="onlyFileMode" type="checkbox" value="">파일만 복사(체크해제시 폴더구조로 복사)</label>
+        </div>
+        <div class="checkbox">
+          <label><input id="classesMode" type="checkbox" value="">Class 파일 복사 (프로젝트 폴더의 .classpath 파일정보 참조)<!--Classes mode (Copy classes files instead of java files.)--></label>
           </div>
           <div id="classesPathInfo" class="panel panel-default" style="display:none;">
             <div class="panel-body">
               <div class="alert alert-warning" role="alert">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 파일 복사시 classPath 정보를 참조해서 복사합니다. 파일리스트 경로는 프로젝트 소스기준으로 맞추면 됩니다.
               </div>
             <strong>.classpath :</strong>
@@ -53,6 +59,9 @@
         </div>
         <div id="svnInfo" class="panel panel-default" style="display:none;">
           <div class="panel-body">
+            <div class="alert alert-warning" role="alert">
+              로컬에 svn 최신 업데이트가 되었는지 확인하세요.
+            </div>
         <div style="margin:0px 0px 10px 0px;" class="input-group">
           <span class="input-group-addon">Revision</span>
           <span class="input-group-addon">from</span>
@@ -73,8 +82,7 @@
         <br>
         <strong>복사할 파일리스트 경로: </strong>
         <div class="alert alert-info" role="alert">
-          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-          복사할 파일의 상대경로(프로젝트 폴더 기준)를 입력하세요. <label class="text-danger">(구분자 : Enter)</label><br>
+          복사할 파일의 상대경로(프로젝트 폴더 기준)를 입력하세요. <label class="text-danger">(구분자 : Enter)</label>
           <!--Input the <strong>relative path</strong> of the file you need to copy. <label class="text-danger">(Separator: Enter)</label>-->
         </div>
         <textarea style="margin:0px 10px 10px 0px;" id="copyFilePaths" class="form-control" rows="10"></textarea>
@@ -90,6 +98,7 @@
   <div class="panel panel-default">
     <div class="panel-heading"><strong>Log</strong>
     </div>
+    <div id="resultCntLog" class="panel-body"></div>
     <div id="resultLog" class="panel-body">
     </div>
 </div>
@@ -97,10 +106,10 @@
   </body>
 
   <script>
-    window.$ = window.jQuery = require('jquery');
-    const iconv  = require('iconv-lite');
-    const fd = require('./fd');
-    const svnInfo = require('./svnInfo');
+    window.$ = window.jQuery = require('jquery')
+    const iconv  = require('iconv-lite')
+    const fd = require('./fd')
+    const svnInfo = require('./svnInfo')
 
     //const euckr2utf8 = new iconv('EUC-KR', 'UTF-8');
     //const utf82euckr = new iconv('UTF-8', 'EUC-KR');
@@ -113,59 +122,59 @@
 
     //Select File Event
     document.getElementById("rootFolder").addEventListener("change", _ => {
-      fd.selectSrcFolder(event, "rootFolderPath");
+      fd.selectSrcFolder(event, "rootFolderPath")
     });
 
     document.getElementById("destFolder").addEventListener("change", _ => {
-      fd.selectDestFolder(event, "destFolderPath");
+      fd.selectDestFolder(event, "destFolderPath")
     });
 
     document.getElementById("classesFolder").addEventListener("change", _ => {
-      fd.selectDestFolder(event, "classesFolderPath");
+      fd.selectDestFolder(event, "classesFolderPath")
     });
 
     document.getElementById("classesMode").addEventListener("click", _ => {
       if( $("#classesPathInfo").css("display") == "none"){
         if(fd.setClassMode("classesFolderPath","classPathInfo")){
-            $("#classesPathInfo").show();
+            $("#classesPathInfo").show()
         }
       }
       else{
-        fd.initClassPaths();
-        $("#classesPathInfo").hide();
+        fd.initClassPaths()
+        $("#classesPathInfo").hide()
       }
     });
 
     document.getElementById("svnCheckbox").addEventListener("click", _ => {
       if( $("#svnInfo").css("display") == "none"){
-        $("#svnInfo").show();
+        $("#svnInfo").show()
       }
       else{
-        $("#svnInfo").hide();
+        $("#svnInfo").hide()
       }
     });
 
     document.getElementById("svnConnBtn").addEventListener("click", _ => {
-      let svnUrl = $('#rootFolderPath').text();
-      let fromRev = $('#fromRev').val();
-      let toRev = $('#toRev').val();
+      let svnUrl = $('#rootFolderPath').text()
+      let fromRev = $('#fromRev').val()
+      let toRev = $('#toRev').val()
       svnInfo.importFileList(svnUrl, fromRev, toRev, "copyFilePaths");
     });
 
     document.getElementById("saveBtn").addEventListener("click", _ => {
-      fd.saveInfo();
+      fd.saveInfo()
     });
 
     document.getElementById("copyBtn").addEventListener("click", _ => {
+      $('#resultCntLog').html("")
       const lines = [];
       $.each($('#copyFilePaths').val().split(/\n/), function(i, line){
         if(line && line.length){
-          //fd.copyFile(line);
-          lines.push(line);
+          lines.push(line)
         }
       });
       if(lines && lines.length){
-          fd.copyFiles(lines,"resultLog");
+          fd.copyFiles(lines,"resultLog")
       }
     });
 
@@ -173,8 +182,7 @@
 
   </script>
 
-  <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="./lib/bootstrap-filestyle.min.js"> </script>
+  <script  type="text/javascript" src="./bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./bootstrap-3.3.2-dist/js/bootstrap-filestyle.min.js"> </script>
 
 </html>
