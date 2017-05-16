@@ -11,6 +11,7 @@ let svnClient = {}
 exports.importFileList = importFileList
 
 function importFileList(url, fromRev, toRev, viewId){
+  console.log("url : " + url);
   let revision = fromRev + ":" + toRev
   svnClient = new SvnClient({
       cwd: url
@@ -19,10 +20,8 @@ function importFileList(url, fromRev, toRev, viewId){
   svnClient.cmd([ 'diff', '--summarize', '-r', revision],function(err, data) {
     if(err){
       //let strContents = new Buffer(err.toString());
-      //console.log(err.toString());
-
+      //console.log(err);
       document.getElementById(svnErrMsgId).innerHTML = err
-      return
     }
     else{
       let dataSplitArr = data.split(/\n/);

@@ -10,10 +10,7 @@
 
     <style>
     .alert {
-      margin-bottom: 1px;
-      height: 30px;
-      line-height:30px;
-      padding:0px 15px;
+      padding:0px 10px;
     }
 
     .panel-height {
@@ -44,7 +41,7 @@
           <div id="classesPathInfo" class="panel panel-default" style="display:none;">
             <div class="panel-body">
               <div class="alert alert-warning" role="alert">
-                파일 복사시 classPath 정보를 참조해서 복사합니다. 파일리스트 경로는 프로젝트 소스기준으로 맞추면 됩니다.
+                파일 복사시 classPath 정보를 참조해서 복사합니다.
               </div>
             <strong>.classpath :</strong>
             <input type="file" id="classesFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary"/>
@@ -60,7 +57,9 @@
         <div id="svnInfo" class="panel panel-default" style="display:none;">
           <div class="panel-body">
             <div class="alert alert-warning" role="alert">
-              로컬에 svn 최신 업데이트가 되었는지 확인하세요.
+              로컬에 svn 최신 업데이트가 되었는지 확인하세요.<br>
+              이 기능은 command line svn이 필요합니다. <a href="https://subversion.apache.org/packages.html" target="_blank">설치페이지로 이동</a><br>
+              내부적으로 다음의 명령어가 사용됩니다 :  svn diff --summarize -r [리비젼 From]:[리비젼 To]
             </div>
         <div style="margin:0px 0px 10px 0px;" class="input-group">
           <span class="input-group-addon">Revision</span>

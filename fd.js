@@ -90,12 +90,33 @@ function copyFile(filePath, logId){
   else{
       destPath = destFolder.getPath()+filePath
   }
-  fs.copy(srcPath, destPath, err => {
+
+let err = false;
+  try {
+    fs.copySync(srcPath, destPath)
+    succFileCnt++
+  } catch (e) {
+    err = e
+    errFileCnt++
+  } finally {
     logCopyFile(err, logId, filePath)
+  }
     if(succFileCnt + errFileCnt === totalFileCnt){
       logCopyFileResult()
     }
-  });
+
+  //   fs.copy(srcPath, destPath, err => {
+  //     if(err){
+  //       errFileCnt++;
+  //     }
+  //     else{
+  //       succFileCnt++;
+  //     }
+  //   logCopyFile(err, logId, filePath)
+  //   if(succFileCnt + errFileCnt === totalFileCnt){
+  //     logCopyFileResult()
+  //   }
+  // });
 }
 
 function existFileCopy () {
@@ -106,11 +127,10 @@ function existFileCopy () {
 function logCopyFile(err, logId, filePath){
   let msg = '<mark><strong>'+filePath + "</strong></mark> : "
   if(err){
-    errFileCnt++
+    console.log(err);
     msg += "<label class='text-danger'>" + err + "</label><br>"
   }
   else{
-    succFileCnt++
     msg += "Success!<br>"
   }
   if(logId){
