@@ -125,10 +125,6 @@ function copyFile(filePath, logId) {
   });
 }
 
-function existFileCopy() {
-  console.log("exist !")
-}
-
 //FILE COPY 결과 로그 PRINT
 function logCopyFile(err, logId, filePath) {
   let msg = '<mark><strong>' + filePath + "</strong></mark> : "

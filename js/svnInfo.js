@@ -58,55 +58,32 @@ function importFileList(url, fromRev, toRev, viewId) {
   svnClient = new SvnClient({
     cwd: url
   });
-
-  console.log(svnClient)
-  let logJson;
+  let logJson
   svnClient.getLog(['-r', fromRev + ":" + toRev, '-v'], function(err, log) {
     if (err) document.getElementById(svnErrMsgId).innerHTML = err
     log.forEach(function(l) {
       l.forEach(function(v) {
         if (v.$) {
           let paths = []
-           if(v.paths.path.length){
-             v.paths.path.forEach(function(f) {
-               paths.push(Object.create(path).init(f.$.action, f.$.kind, f._));
-             });
-           } else {
-             paths.push(Object.create(path).init(v.paths.path.$.action, v.paths.path.$.kind, v.paths.path._));
-           }
-           if(paths.length){
-             paths.forEach(function(p){
-               if(p.getKind() === "file"){ //디렉토리는 복사하지 않는다.
-                  let _path = p.getFilePath().substring(p.getFilePath().indexOf("/",2), p.getFilePath().length)
-                  document.getElementById(viewId).value = document.getElementById(viewId).value + _path + '\n'
-               }
-             });
-           }
+          if (v.paths.path.length) {
+            v.paths.path.forEach(function(f) {
+              paths.push(Object.create(path).init(f.$.action, f.$.kind, f._));
+            });
+          } else {
+            paths.push(Object.create(path).init(v.paths.path.$.action, v.paths.path.$.kind, v.paths.path._));
+          }
+          if (paths.length) {
+            paths.forEach(function(p) {
+              if (p.getKind() === "file") { //디렉토리는 복사하지 않는다.
+                let _path = p.getFilePath().substring(p.getFilePath().indexOf("/", 2), p.getFilePath().length)
+                document.getElementById(viewId).value = document.getElementById(viewId).value + _path + '\n'
+              }
+            });
+          }
           svnInfos.push(Object.create(rev).init(v.$.revision, v.author, v.date, v.msg, paths))
         } //end if
       }); //end forEach
     }); //end forEach
     //console.log(JSON.stringify(svnInfos))
   }); //end getLog
-
-  // svnClient.cmd(['diff', '--summarize', '-r', revision], function(err, data) {
-  //   if (err) {
-  //     //let strContents = new Buffer(err.toString());
-  //     //console.log(err);
-  //     document.getElementById(svnErrMsgId).innerHTML = err
-  //   } else {
-  //     let dataSplitArr = data.split(/\n/);
-  //     document.getElementById(svnErrMsgId).innerHTML = msg_successLoadFileList + msg_successLoadFileCnt + (dataSplitArr.length - 1);
-  //     document.getElementById(viewId).value = ""
-  //     if (data && data.length) {
-  //       $.each(data.split(/\n/), function(i, line) {
-  //         if (line && line.length) {
-  //           if (line.lastIndexOf('.') !== -1) {
-  //             document.getElementById(viewId).value = document.getElementById(viewId).value + "\\" + $.trim(line.substring(2, line.length)) + '\n'
-  //           }
-  //         }
-  //       });
-  //     }
-  //   }
-  // }); //end cmd
 }

@@ -6,8 +6,9 @@ const destFolderPathId = "destFolderPath"
 const onlyFileModeId = "onlyFileMode"
 const classesModeId = "classesMode"
 const svnModeId = "svnCheckbox"
-const saveSettingPath = "./saveSettings.json"
 const resultCntLogId = "resultCntLog" //로그 div id
+const copyFilePathsId = "copyFilePaths" //filepath textarea
+const saveSettingPath = "./saveSettings.json"
 
 //const iconv = require('iconv-lite')
 const fd = require('./js/fd')
@@ -64,10 +65,11 @@ document.getElementById(svnModeId).addEventListener("click", _ => {
 });
 
 document.getElementById("svnConnBtn").addEventListener("click", _ => {
+  $('#'+copyFilePathsId).val('')
   let svnUrl = $('#'+rootFolderPathId).text()
   let fromRev = $('#fromRev').val()
   let toRev = $('#toRev').val()
-  svnInfo.importFileList(svnUrl, fromRev, toRev, "copyFilePaths");
+  svnInfo.importFileList(svnUrl, fromRev, toRev, copyFilePathsId);
 });
 
 document.getElementById("saveBtn").addEventListener("click", _ => {
@@ -77,7 +79,7 @@ document.getElementById("saveBtn").addEventListener("click", _ => {
 document.getElementById("copyBtn").addEventListener("click", _ => {
   $('#'+resultCntLogId).html("")
   const lines = [];
-  $.each($('#copyFilePaths').val().split(/\n/), function(i, line) {
+  $.each($('#' + copyFilePathsId).val().split(/\n/), function(i, line) {
     if (line && line.length) {
       lines.push(line)
     }
