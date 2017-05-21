@@ -1,12 +1,12 @@
 {
-  "name": "electron-quick-start",
+  "name": "file Copy",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "file Copy",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/ddanguri/fileCopy.git",
   "author": {
     "name": "ddanguri",
     "email": "sweet.khg@gmail.com",

@@ -1,97 +1,98 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Copy Files</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap.min.css">
-    <!-- 부가적인 테마 -->
-    <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
+<head>
+  <meta charset="UTF-8">
+  <title>Copy Files</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap.min.css">
+  <!-- 부가적인 테마 -->
+  <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
 
-    <style>
+  <style>
     .alert {
-      padding:0px 10px;
+      padding: 0px 10px;
     }
 
     .panel-height {
       height: 300px;
     }
-    </style>
-  </head>
+  </style>
+</head>
 
-  <body>
-    <div class="panel panel-default">
-      <div class="panel-heading"><strong>Settings</strong>
+<body>
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong>Settings</strong>
+    </div>
+    <div class="panel-body">
+      <strong>프로젝트 폴더 : <!--Source Dir :--></strong>
+      <input type="file" id="rootFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" webkitdirectory />
+      <div style="margin:0px 10px 10px 0px;">지정된 경로
+        <!--Absolute Path-->: <label id="rootFolderPath" /></div>
+
+      <strong>복사할 폴더 : <!--Destination Dir :--></strong>
+      <input type="file" id="destFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" webkitdirectory />
+      <div style="margin:0px 10px 10px 0px;">지정된 경로
+        <!--Absolute Path-->: <label id="destFolderPath" /></div>
+
+      <div class="checkbox">
+        <label><input id="onlyFileMode" type="checkbox" value="">파일만 복사(체크해제시 폴더구조로 복사)</label>
       </div>
-      <div class="panel-body">
-        <strong>프로젝트 폴더 : <!--Source Dir :--></strong>
-        <input type="file" id="rootFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" webkitdirectory />
-        <div style="margin:0px 10px 10px 0px;">지정된 경로<!--Absolute Path--> : <label id="rootFolderPath"/></div>
-
-        <strong>복사할 폴더 : <!--Destination Dir :--></strong>
-        <input type="file" id="destFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" webkitdirectory />
-        <div style="margin:0px 10px 10px 0px;">지정된 경로<!--Absolute Path--> : <label id="destFolderPath"/></div>
-
-        <div class="checkbox">
-          <label><input id="onlyFileMode" type="checkbox" value="">파일만 복사(체크해제시 폴더구조로 복사)</label>
+      <div class="checkbox">
+        <label><input id="classesMode" type="checkbox" value="">Class 파일 복사 (프로젝트 폴더의 .classpath 파일정보 참조)<!--Classes mode (Copy classes files instead of java files.)--></label>
+      </div>
+      <div id="classesPathInfo" class="panel panel-default" style="display:none;">
+        <div class="panel-body">
+          <div class="alert alert-warning" role="alert">
+            파일 복사시 classPath 정보를 참조해서 복사합니다.
+          </div>
+          <strong>.classpath :</strong>
+          <input type="file" id="classesFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary" />
+          <div style="margin:0px 10px 10px 0px;">지정된 경로
+            <!--Absolute Path-->: <label id="classesFolderPath" /></div>
+          <strong>classPath 정보</strong>
+          <div id="classPathInfo" style="margin:0px 10px 10px 0px;"></div>
         </div>
-        <div class="checkbox">
-          <label><input id="classesMode" type="checkbox" value="">Class 파일 복사 (프로젝트 폴더의 .classpath 파일정보 참조)<!--Classes mode (Copy classes files instead of java files.)--></label>
-          </div>
-          <div id="classesPathInfo" class="panel panel-default" style="display:none;">
-            <div class="panel-body">
-              <div class="alert alert-warning" role="alert">
-                파일 복사시 classPath 정보를 참조해서 복사합니다.
-              </div>
-            <strong>.classpath :</strong>
-            <input type="file" id="classesFolder" class="filestyle" data-buttonText="Select" data-buttonName="btn-primary"/>
-            <div style="margin:0px 10px 10px 0px;">지정된 경로<!--Absolute Path--> : <label id="classesFolderPath"/></div>
-            <strong>classPath 정보</strong>
-            <div id="classPathInfo" style="margin:0px 10px 10px 0px;"></div>
-          </div>
-          </div>
+      </div>
 
-        <div class="checkbox">
-          <label><input id="svnCheckbox" type="checkbox" value="">SVN revision 정보로 변경된 파일리스트 추출(SVN project만 사용가능)<!--Import a list of changed files using SVN revision (Options for SVN projects)--></label>
-        </div>
-        <div id="svnInfo" class="panel panel-default" style="display:none;">
-          <div class="panel-body">
-            <div class="alert alert-warning" role="alert">
-              로컬에 svn 최신 업데이트가 되었는지 확인하세요.<br>
-              이 기능은 command line svn이 필요합니다. <a href="https://subversion.apache.org/packages.html" target="_blank">설치페이지로 이동</a><br>
-              내부적으로 다음의 명령어가 사용됩니다 :  svn diff --summarize -r [리비젼 From]:[리비젼 To]
+      <div class="checkbox">
+        <label><input id="svnCheckbox" type="checkbox" value="">SVN revision 정보로 변경된 파일리스트 추출(SVN project만 사용가능)<!--Import a list of changed files using SVN revision (Options for SVN projects)--></label>
+      </div>
+      <div id="svnInfo" class="panel panel-default" style="display:none;">
+        <div class="panel-body">
+          <div class="alert alert-warning" role="alert">
+            로컬에 svn 최신 업데이트가 되었는지 확인하세요.<br> 이 기능은 command line svn이 필요합니다. <a href="https://subversion.apache.org/packages.html" target="_blank">설치페이지로 이동</a><br>
+          </div>
+          <div style="margin:0px 0px 10px 0px;" class="input-group">
+            <span class="input-group-addon">Revision</span>
+            <span class="input-group-addon">from</span>
+            <input id="fromRev" type="text" class="form-control" name="fromRev" value="" />
+            <span class="input-group-addon">to</span>
+            <input id="toRev" type="text" class="form-control" name="toRev" value="" />
+          </div>
+          <label id="svnErrMsg" class='text-danger'></label>
+          <div id="progressBar" class="progress" style="display:none;">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%">
             </div>
-        <div style="margin:0px 0px 10px 0px;" class="input-group">
-          <span class="input-group-addon">Revision</span>
-          <span class="input-group-addon">from</span>
-          <input id="fromRev" type="text" class="form-control" name="fromRev" value=""/>
-          <span class="input-group-addon">to</span>
-          <input id="toRev" type="text" class="form-control" name="toRev" value=""/>
-        </div>
-        <label id="svnErrMsg" class='text-danger'></label>
-        <div id="progressBar" class="progress" style="display:none;">
-          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%">
           </div>
-        </div>
-        <p class="text-right">
-          <a href="#" id="svnConnBtn" class="btn btn-primary" role="button">파일리스트 추출<!--Import--></a>
-        </p>
+          <p class="text-right">
+            <a href="#" id="svnConnBtn" class="btn btn-primary" role="button">파일리스트 추출<!--Import--></a>
+          </p>
         </div>
       </div>
-        <br>
-        <strong>복사할 파일리스트 경로: </strong>
-        <div class="alert alert-info" role="alert">
-          복사할 파일의 상대경로(프로젝트 폴더 기준)를 입력하세요. <label class="text-danger">(구분자 : Enter)</label>
-          <!--Input the <strong>relative path</strong> of the file you need to copy. <label class="text-danger">(Separator: Enter)</label>-->
-        </div>
-        <textarea style="margin:0px 10px 10px 0px;" id="copyFilePaths" class="form-control" rows="10"></textarea>
+      <br>
+      <strong>복사할 파일리스트 경로: </strong>
+      <div class="alert alert-info" role="alert">
+        복사할 파일의 상대경로(프로젝트 폴더 기준)를 입력하세요. <label class="text-danger">(구분자 : Enter)</label>
+        <!--Input the <strong>relative path</strong> of the file you need to copy. <label class="text-danger">(Separator: Enter)</label>-->
+      </div>
+      <textarea style="margin:0px 10px 10px 0px;" id="copyFilePaths" class="form-control" rows="10"></textarea>
 
 
       <p class="text-right">
         <a href="#" id="saveBtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Setting 저장</a>
         <a href="#" id="copyBtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-paste" aria-hidden="true"></span> 파일복사</a>
       </p>
-      </div>
+    </div>
   </div>
 
   <div class="panel panel-default">
@@ -100,88 +101,11 @@
     <div id="resultCntLog" class="panel-body"></div>
     <div id="resultLog" class="panel-body">
     </div>
-</div>
+  </div>
 
-  </body>
+  <script src="./js/index.js"></script>
+  <script src="./bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+  <script src="./bootstrap-3.3.2-dist/js/bootstrap-filestyle.min.js"></script>
 
-  <script>
-    window.$ = window.jQuery = require('jquery')
-    const iconv  = require('iconv-lite')
-    const fd = require('./fd')
-    const svnInfo = require('./svnInfo')
-
-    //const euckr2utf8 = new iconv('EUC-KR', 'UTF-8');
-    //const utf82euckr = new iconv('UTF-8', 'EUC-KR');
-
-    $(document).ready(function(){
-      $("#rootFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
-      $("#destFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
-      $("#classesFolder").filestyle({buttonName: "btn-primary", buttonText: "Select"});
-    });
-
-    //Select File Event
-    document.getElementById("rootFolder").addEventListener("change", _ => {
-      fd.selectSrcFolder(event, "rootFolderPath")
-    });
-
-    document.getElementById("destFolder").addEventListener("change", _ => {
-      fd.selectDestFolder(event, "destFolderPath")
-    });
-
-    document.getElementById("classesFolder").addEventListener("change", _ => {
-      fd.selectDestFolder(event, "classesFolderPath")
-    });
-
-    document.getElementById("classesMode").addEventListener("click", _ => {
-      if( $("#classesPathInfo").css("display") == "none"){
-        if(fd.setClassMode("classesFolderPath","classPathInfo")){
-            $("#classesPathInfo").show()
-        }
-      }
-      else{
-        fd.initClassPaths()
-        $("#classesPathInfo").hide()
-      }
-    });
-
-    document.getElementById("svnCheckbox").addEventListener("click", _ => {
-      if( $("#svnInfo").css("display") == "none"){
-        $("#svnInfo").show()
-      }
-      else{
-        $("#svnInfo").hide()
-      }
-    });
-
-    document.getElementById("svnConnBtn").addEventListener("click", _ => {
-      let svnUrl = $('#rootFolderPath').text()
-      let fromRev = $('#fromRev').val()
-      let toRev = $('#toRev').val()
-      svnInfo.importFileList(svnUrl, fromRev, toRev, "copyFilePaths");
-    });
-
-    document.getElementById("saveBtn").addEventListener("click", _ => {
-      fd.saveInfo()
-    });
-
-    document.getElementById("copyBtn").addEventListener("click", _ => {
-      $('#resultCntLog').html("")
-      const lines = [];
-      $.each($('#copyFilePaths').val().split(/\n/), function(i, line){
-        if(line && line.length){
-          lines.push(line)
-        }
-      });
-      if(lines && lines.length){
-          fd.copyFiles(lines,"resultLog")
-      }
-    });
-
-    fd.loadInfo();
-
-  </script>
-
-  <script  type="text/javascript" src="./bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="./bootstrap-3.3.2-dist/js/bootstrap-filestyle.min.js"> </script>
-
+</body>
 </html>
