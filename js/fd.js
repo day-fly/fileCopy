@@ -176,7 +176,9 @@ function setClassMode(classesFolderPath, classPathInfo) {
         if (result.classpath.classpathentry && result.classpath.classpathentry.length) {
           for (let i = 0, item; item = result.classpath.classpathentry[i]; i++) {
             if (item.$.kind === "src") {
-              classPathInfos.push(Object.create(classPath).init(item.$.path.replace(/\//g, "\\"), item.$.output.replace(/\//g, "\\") || ''))
+              let _path = item.$.path || ''
+              let _output = item.$.output || ''
+              classPathInfos.push(Object.create(classPath).init(_path.replace(/\//g, "\\"), _output.replace(/\//g, "\\")))
             } else if (item.$.kind === "output") {
               toClassPath = item.$.path.replace(/\//g, "\\")
             }

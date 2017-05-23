@@ -75,8 +75,11 @@ function importFileList(url, fromRev, toRev, viewId) {
           if (paths.length) {
             paths.forEach(function(p) {
               if (p.getKind() === "file") { //디렉토리는 복사하지 않는다.
-                let _path = p.getFilePath().substring(p.getFilePath().indexOf("/", 2), p.getFilePath().length)
-                document.getElementById(viewId).value = document.getElementById(viewId).value + _path + '\n'
+                let fileListVal = document.getElementById(viewId).value || ''
+                if(fileListVal.indexOf(p.getFilePath()) === -1){
+                  //let _path = p.getFilePath().substring(p.getFilePath().indexOf("/", 2), p.getFilePath().length)
+                  document.getElementById(viewId).value = fileListVal + p.getFilePath() + '\n'
+                }
               }
             });
           }
